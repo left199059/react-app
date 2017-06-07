@@ -5927,3 +5927,7 @@ input[type="submit"] {
 .illegal_order_list .info .mui-pull-right {
 	color: #999;
 }
+
+  .whiteBg {
+    background : white
+  }

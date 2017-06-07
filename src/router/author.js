@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import login from './login';
+import Login from '../components/authorization/login';
 
-class author extends Component {
+class Author extends Component {
   render() {
     return (
-      <div className="mui-content">
-        <AuthorRoute path="/" component={login} />
+      <div className="mui-content whiteBg">
+        <AuthorRoute path="/" component={Login} />
       </div>
     );
   }
@@ -25,4 +25,4 @@ const AuthorRoute = ({ component: Component, ...rest }) => (
     />
 );
 
-export default author;
+export default Author;

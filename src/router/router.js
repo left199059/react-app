@@ -1,13 +1,13 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import author from '../components/authorization/author';
-import index from '../components/homepages/index';
+import Author from './author';
+import Index from './index';
 
 const router = () => (
   <Router>
     <div>
-      <Route path="/" exact component={author} />
-      <Route path="/index" component={index} />
+      <Route path="/" exact component={Author} />
+      <Route path="/index" component={Index} />
     </div>
   </Router>
 );

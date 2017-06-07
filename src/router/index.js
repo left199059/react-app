@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 // import React from 'react';
 import { Route, NavLink, Switch } from 'react-router-dom';
-import home from './home';
-import drive from './drive';
-import mall from './mall';
-import user from './user';
+import Home from '../components/homepages/home';
+import Drive from '../components/homepages/drive';
+import Mall from '../components/homepages/mall';
+import User from '../components/homepages/user';
 
-class index extends Component {
+class Index extends Component {
   render() {
     console.log(this.props.match);
     return (
@@ -56,20 +56,20 @@ class index extends Component {
         <Switch>
           <Route className="mui-content"
             path="/index"
-            component={home}
+            component={Home}
             exact
           />
           <Route className="mui-content"
             path="/index/drive"
-            component={drive}
+            component={Drive}
           />
           <Route className="mui-content"
             path="/index/mall"
-            component={mall}
+            component={Mall}
           />
           <Route className="mui-content"
             path="/index/user"
-            component={user}
+            component={User}
           />
         </Switch>
       </div>
@@ -77,4 +77,4 @@ class index extends Component {
   }
 }
 
-export default index;
+export default Index;
