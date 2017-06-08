@@ -1,6 +1,4 @@
 import axios from 'axios';
-// eslint-disable-next-line
-import qs from 'qs';
 
 /**
  * 对于有默认值的参数，需要使用默认值请传入 undefined
@@ -23,11 +21,11 @@ function request(requestUrl, requestData, method = 'GET', timeout = 10000, wait 
   const config = {
     url: requestUrl,
     method,
-    header: {
+    headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
     params: requestData, // get参数
-    data: qs.stringify(requestData), // post参数
+    data: requestData, // post参数
     timeout,
   };
   console.log(requestData);
