@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "axios": "^0.16.2",
     "babel-eslint": "^7.2.3",
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^15.0.1",
@@ -91,5 +92,10 @@
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "proxy": {
+      "/user": {
+        "target": "https://auth.kcnzq.com:1050"
+      }
   }
 }
