@@ -6,7 +6,7 @@ import Index from './index';
 const router = () => (
   <Router>
     <div>
-      <Route path="/" exact component={Author} />
+      <Route path="/" component={Author} />
       <Route path="/index" component={Index} />
     </div>
   </Router>

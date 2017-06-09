@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import Login from '../components/authorization/login';
+import Register from '../components/authorization/register';
 
 class Author extends Component {
   render() {
     return (
       <div className="mui-content whiteBg">
-        <AuthorRoute path="/" component={Login} />
+        <AuthorRoute path="/" exact component={Login} />
+        <Route path="/author/register" component={Register} />
       </div>
     );
   }

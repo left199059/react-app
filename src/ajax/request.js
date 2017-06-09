@@ -1,4 +1,7 @@
 import axios from 'axios';
+import createHistory from 'history/createBrowserHistory';
+import Toast from '../components/common/toast';
+import Indicator from '../components/common/indicator/indicator';
 
 /**
  * 对于有默认值的参数，需要使用默认值请传入 undefined
@@ -11,7 +14,7 @@ import axios from 'axios';
  */
 function request(requestUrl, requestData, method = 'GET', timeout = 10000, wait = true, callback) {
   if (wait) {
-    // Indicator.open()
+    Indicator.open();
   }
   // let data = requestData;
   // if (store.state.userInfo.hasOwnProperty('uid')) {
@@ -28,35 +31,26 @@ function request(requestUrl, requestData, method = 'GET', timeout = 10000, wait 
     data: requestData, // post参数
     timeout,
   };
-  console.log(requestData);
+  const history = createHistory();
   axios(config).then((response) => {
-    // Indicator.close()
+    Indicator.close();
     console.log(requestUrl);
     console.log(response.data);
     const data = response.data;
     if (data.errCode === 100017) {
-      // router.push('/');
-      // Toast({
-      //   message: '请重新登陆',
-      //   position: 'bottom',
-      //   duration: 3000,
-      // });
-      localStorage.setItem('autoLogin', false); // 自动登录标识
+      history.push('/');
+      Toast('请重新登录', 2000);
+      localStorage.setItem('autoLogin', 'false'); // 自动登录标识
       // store.dispatch('changeUser', true); // 用户离线状态
     } else if (data.errCode === '0' || data.errCode === 0 || data.errCode === 200 || data.result === 200) {
       callback(data);
     } else if (data.errCode === '100015' || data.errCode === 100015 || data.errCode === '100011' || data.errCode === 100011) {
       callback(data);
     } else if (data.errMsg !== '') {
-      // Toast({
-      //   message: data.errMsg,
-      //   position: 'bottom',
-      //   duration: 2000,
-      // });
+      Toast(data.errMsg, 2000);
     }
   }).catch((error) => {
-    // Indicator.close()
-    console.log(error);
+    Indicator.close();
     if (error) {
       let msg = '';
       if (error.message === 'Network Error') {
@@ -64,15 +58,10 @@ function request(requestUrl, requestData, method = 'GET', timeout = 10000, wait 
       } else if (error.message === `timeout of ${timeout}ms exceeded`) {
         msg = '请求超时，请重试';
       }
-      console.log(msg);
-      // if (msg === '') {
-      //   return;
-      // }
-      // Toast({
-      //   message: msg,
-      //   position: 'bottom',
-      //   duration: 2000,
-      // });
+      if (msg === '') {
+        return;
+      }
+      Toast(msg, 2000);
     }
   });
 }

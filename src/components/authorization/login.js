@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import PhoneNumberInput from '../common/phoneNumberInput';
 import PasswordInput from '../common/passwordInput';
+import Toast from '../../components/common/toast';
 import check from '../../utils/check';
 import { login } from '../../ajax/user';
 
@@ -25,16 +27,17 @@ class Login extends Component {
     const phoneInfo = check.mytel(this.state.phone);
     const passwordInfo = check.mypassword(this.state.password);
     if (phoneInfo) {
-      // Toast.info(phoneInfo, 2);
-      console.log(phoneInfo);
+      Toast(phoneInfo);
     } else if (passwordInfo) {
-      // Toast.info(passwordInfo, 2);
-      console.log(passwordInfo);
+      Toast(passwordInfo);
     } else {
       console.log(this.props.history);
       login(this.state.phone, this.state.password, (data) => {
-        console.log(data);
-        this.props.history.push('/index');
+        if (data.errCode !== '100015' && data.errCode !== 100015) {
+          this.props.history.push('/index');
+        } else {
+          Toast(data.errMsg);
+        }
       });
     }
   }
@@ -66,9 +69,9 @@ class Login extends Component {
           </p>
         </div>
         <div className="login_foot">
-          <a
-            className="mui-btn mui-btn-success mui-btn-outlined"
-          >注册账号</a>
+          <Link className="mui-btn mui-btn-success mui-btn-outlined"
+            to="/author/register"
+          >注册账号</Link>
         </div>
       </div>
     );
