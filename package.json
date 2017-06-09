@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "antd-mobile": "^1.2.0",
     "axios": "^0.16.2",
     "babel-eslint": "^7.2.3",
     "eslint": "^3.19.0",
@@ -23,6 +24,7 @@
     "babel-eslint": "7.2.3",
     "babel-jest": "20.0.3",
     "babel-loader": "7.0.0",
+    "babel-plugin-import": "^1.2.1",
     "babel-preset-react-app": "^3.0.0",
     "babel-runtime": "6.23.0",
     "case-sensitive-paths-webpack-plugin": "1.1.4",
@@ -41,13 +43,16 @@
     "fs-extra": "3.0.1",
     "html-webpack-plugin": "2.28.0",
     "jest": "20.0.3",
+    "less-loader": "^4.0.4",
     "object-assign": "4.1.1",
     "postcss-flexbugs-fixes": "3.0.0",
     "postcss-loader": "2.0.5",
+    "postcss-pxtorem": "^4.0.1",
     "promise": "7.1.1",
     "react-dev-utils": "^3.0.0",
     "react-error-overlay": "^1.0.7",
     "style-loader": "0.17.0",
+    "svg-sprite-loader": "^0.3.1",
     "sw-precache-webpack-plugin": "0.9.1",
     "url-loader": "0.5.8",
     "webpack": "2.6.1",
@@ -94,8 +99,8 @@
     "extends": "react-app"
   },
   "proxy": {
-      "/user": {
-        "target": "https://auth.kcnzq.com:1050"
-      }
+    "/user": {
+      "target": "https://auth.kcnzq.com:1050"
+    }
   }
 }
