@@ -5,7 +5,7 @@ class PhoneNumberInput extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      blur: false,
+      blur: true,
     };
     this.handleInput = this.handleInput.bind(this);
     this.clearInput = this.clearInput.bind(this);
@@ -16,10 +16,11 @@ class PhoneNumberInput extends Component {
   }
   clearInput() {
     this.props.phoneInputHandle('');
+    this.setState({ blur: true });
   }
   iconToggle() {
-    this.setState((prevState, props) => ({
-      blur: props.phoneNumber === '' ? prevState.blur : !prevState.blur,
+    this.setState(prevState => ({
+      blur: !prevState.blur,
     }));
   }
   render() {
@@ -30,21 +31,21 @@ class PhoneNumberInput extends Component {
           placeholder="请输入手机号"
           maxLength="11"
           value={this.props.phoneNumber}
-          onInput={this.handleInput}
+          onChange={this.handleInput}
           onBlur={this.iconToggle}
           onFocus={this.iconToggle}
         />
-        <span className={`${(this.props.phoneNumber === '' || this.state.blur) ? 'mui-hidden' : ''} mui-icon mui-icon-clear`}
-          onTouchTap={this.clearInput}
+        <span className={`${(this.state.blur || this.props.phoneNumber === '') ? 'mui-hidden' : ''} mui-icon mui-icon-clear`}
+          onClick={this.clearInput}
         />
       </div>
     );
   }
 }
 
-PhoneNumberInput.PropTypes = {
-  phoneNumber: PropTypes.string,
-  phoneInputHandle: PropTypes.func,
+PhoneNumberInput.propTypes = {
+  phoneNumber: PropTypes.string.isRequired,
+  phoneInputHandle: PropTypes.func.isRequired,
 };
 
 export default PhoneNumberInput;

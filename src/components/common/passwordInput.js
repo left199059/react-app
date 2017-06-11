@@ -35,16 +35,16 @@ class PasswordInput extends Component {
           onInput={this.handleInput}
         />
         <span className={`${this.state.type === 'text' ? 'on' : ''} mui-icon-see`}
-          onTouchTap={this.typeToggle}
+          onClick={this.typeToggle}
         />
       </div>
     );
   }
 }
 
-PasswordInput.PropTypes = {
-  password: PropTypes.string,
-  passwordInputHandle: PropTypes.func,
+PasswordInput.propTypes = {
+  password: PropTypes.string.isRequired,
+  passwordInputHandle: PropTypes.func.isRequired,
 };
 
 export default PasswordInput;

@@ -9,18 +9,25 @@ class CodeInput extends Component {
     super(props);
     this.state = {
       blur: false,
-      codeable: true,
+      value: '获取验证码',
+      tapable: false,
     };
     this.handleInput = this.handleInput.bind(this);
     this.clearInput = this.clearInput.bind(this);
     this.iconToggle = this.iconToggle.bind(this);
     this.checkPhoneNumber = this.checkPhoneNumber.bind(this);
   }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+
   handleInput(e) {
     this.props.codeInputHandle(e.target.value.trim().replace(/\D/g, ''));
   }
   clearInput() {
     this.props.codeInputHandle('');
+    this.setState({ blur: false });
   }
   iconToggle() {
     this.setState((prevState, props) => ({
@@ -32,12 +39,32 @@ class CodeInput extends Component {
     if (phoneResult) {
       Toast(phoneResult);
     } else {
-      getCode(this.props.phone, () => {
+      getCode({
+        phone: this.props.phone,
+        type: this.props.type,
+      }, () => {
         Toast('发送成功');
-        this.setState({ codeable: false });
+        let time = 60;
+        this.setState({
+          value: `重新发送(${time}s)`,
+          tapable: true,
+        });
+        this.timer = setInterval(() => {
+          time -= 1;
+          if (time <= 0) {
+            clearInterval(this.timer);
+            this.setState({
+              value: ' 获取验证码',
+              tapable: false,
+            });
+            return;
+          }
+          this.setState({ value: `重新发送(${time}s)` });
+        }, 1000);
       });
     }
   }
+
   render() {
     return (
       <div className="mui-input-row code_row">
@@ -49,24 +76,26 @@ class CodeInput extends Component {
           value={this.props.code}
           onBlur={this.iconToggle}
           onFocus={this.iconToggle}
-          disabled={this.state.codeable}
         />
         <span className={`${(this.props.code === '' || this.state.blur) ? 'mui-hidden' : ''} mui-icon mui-icon-clear`}
-          onTouchTap={this.clearInput}
+          onClick={this.clearInput}
         />
         <input type="button"
           className="mui-btn mui-btn-block mui-btn-success"
-          value="获取验证码"
-          onTouchTap={this.checkPhoneNumber}
+          value={this.state.value}
+          onClick={this.checkPhoneNumber}
+          disabled={this.state.tapable}
         />
       </div>
     );
   }
 }
 
-CodeInput.PropTypes = {
-  code: PropTypes.string,
-  codeInputHandle: PropTypes.func,
+CodeInput.propTypes = {
+  phone: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  code: PropTypes.string.isRequired,
+  codeInputHandle: PropTypes.func.isRequired,
 };
 
 export default CodeInput;

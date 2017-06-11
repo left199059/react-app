@@ -5,18 +5,19 @@ import PasswordInput from '../common/passwordInput';
 import Toast from '../../components/common/toast';
 import check from '../../utils/check';
 import { login } from '../../ajax/user';
-
+/* eslint-disable react/prop-types */
 class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      phone: '',
+      phone: localStorage.getItem('phone') || '',
       password: '',
     };
     this.phoneHandle = this.phoneHandle.bind(this);
     this.passwordHandle = this.passwordHandle.bind(this);
     this.login = this.login.bind(this);
   }
+
   phoneHandle(phone) {
     this.setState({ phone });
   }
@@ -31,10 +32,12 @@ class Login extends Component {
     } else if (passwordInfo) {
       Toast(passwordInfo);
     } else {
-      console.log(this.props.history);
       login(this.state.phone, this.state.password, (data) => {
         if (data.errCode !== '100015' && data.errCode !== 100015) {
           this.props.history.push('/index');
+          localStorage.setItem('autoLogin', 'true');
+          localStorage.setItem('phone', this.state.phone);
+          localStorage.setItem('uid', data.data.uid);
         } else {
           Toast(data.errMsg);
         }
@@ -61,11 +64,13 @@ class Login extends Component {
         <div className="edit_btn login_btn">
           <button className="mui-btn mui-btn-block mui-btn-success"
             disabled={this.state.phone.length !== 11 || this.state.password.length !== 6}
-            onTouchTap={this.login}
+            onClick={this.login}
           >登录</button>
           <p className="clearfix">
             <a className="mui-pull-left green">微信登录</a>
-            <a className="mui-pull-right green">忘记密码？</a>
+            <Link className="mui-pull-right green"
+              to="/author/forgetpassword"
+            >忘记密码？</Link>
           </p>
         </div>
         <div className="login_foot">

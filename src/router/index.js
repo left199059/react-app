@@ -5,7 +5,7 @@ import Home from '../components/homepages/home';
 import Drive from '../components/homepages/drive';
 import Mall from '../components/homepages/mall';
 import User from '../components/homepages/user';
-
+/* eslint-disable react/prop-types */
 class Index extends Component {
   render() {
     console.log(this.props.match);

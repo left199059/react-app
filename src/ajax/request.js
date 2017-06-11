@@ -51,6 +51,7 @@ function request(requestUrl, requestData, method = 'GET', timeout = 10000, wait 
     }
   }).catch((error) => {
     Indicator.close();
+    console.log(error);
     if (error) {
       let msg = '';
       if (error.message === 'Network Error') {
