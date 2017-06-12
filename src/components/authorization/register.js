@@ -62,7 +62,7 @@ class Register extends Component {
   }
   render() {
     return (
-      <div>
+      <div className="mui-content whiteBg">
         <Header pre={'/'} title={'注册'} />
         <div className="mui-content">
           <div className="mui-input-group login_group">

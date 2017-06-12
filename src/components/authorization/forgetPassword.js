@@ -98,7 +98,7 @@ class ForgetPassword extends Component {
         </div>);
     }
     return (
-      <div>
+      <div className="mui-content whiteBg">
         <Header pre={'/'} title={'忘记密码'} />
         <div className="mui-content">
           {component}
