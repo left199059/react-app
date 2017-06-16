@@ -8,7 +8,6 @@ import User from '../components/homepages/user';
 /* eslint-disable react/prop-types */
 class Index extends Component {
   render() {
-    console.log(this.props.match);
     return (
       <div className="mui-content">
         <div className="mui-bar mui-bar-tab">

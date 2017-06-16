@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { saveUserInfo } from '../../redux/actions';
 import PhoneNumberInput from '../common/phoneNumberInput';
 import PasswordInput from '../common/passwordInput';
 import Toast from '../../components/common/toast';
@@ -34,10 +36,12 @@ class Login extends Component {
     } else {
       login(this.state.phone, this.state.password, (data) => {
         if (data.errCode !== '100015' && data.errCode !== 100015) {
+          this.props.dispatch(saveUserInfo(data.data));
           this.props.history.push('/index');
           localStorage.setItem('autoLogin', 'true');
           localStorage.setItem('phone', this.state.phone);
           localStorage.setItem('uid', data.data.uid);
+          localStorage.setItem('token', data.data.token);
         } else {
           Toast(data.errMsg);
         }
@@ -83,4 +87,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default connect()(Login);

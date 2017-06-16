@@ -16,11 +16,8 @@ function request(requestUrl, requestData, method = 'GET', timeout = 10000, wait 
   if (wait) {
     Indicator.open();
   }
-  // let data = requestData;
-  // if (store.state.userInfo.hasOwnProperty('uid')) {
-  //   requestData.uid = store.state.userInfo.uid;
-  //   requestData.token = store.state.userInfo.token;
-  // }
+  requestData.uid = localStorage.getItem('uid') || '';
+  requestData.token = localStorage.getItem('token') || '';
   const config = {
     url: requestUrl,
     method,

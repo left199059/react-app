@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@tweenjs/tween.js": "^16.7.0",
     "axios": "^0.16.2",
     "babel-eslint": "^7.2.3",
     "eslint": "^3.19.0",
