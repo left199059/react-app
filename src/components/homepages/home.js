@@ -1,16 +1,45 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { getMoney, makeMoney } from '../../ajax/redpack';
 
 const TWEEN = require('@tweenjs/tween.js');
-
+/**
+     *渐变动画函数
+     *@param {number} newV
+     *@param {number} old
+     *@param {number} prop 动画对象
+    */
+function animateUp(newV, oldV, callback) {
+  let animationFrame;
+  function animate(time) {
+    TWEEN.update(time);
+    animationFrame = requestAnimationFrame(animate);
+  }
+  new TWEEN
+    .Tween({ tweeningNumber: oldV })
+    .easing(TWEEN.Easing.Quadratic.Out)
+    .to({
+      tweeningNumber: newV,
+    }, 1000)
+    .onUpdate(function () {
+      callback(this.tweeningNumber.toFixed(2));
+    })
+    .onComplete(() => {
+      cancelAnimationFrame(animationFrame);
+    })
+    .start();
+  animationFrame = requestAnimationFrame(animate);
+}
 class Home extends Component {
   constructor() {
     super();
     this.state = {
       canvasSize: 0,
       animateScore: 0,
-      animateMoney: 0,
+      animateText: 0,
+      animateMoney: 0.00,
+      chance: 0,
     };
   }
   componentWillMount() {
@@ -18,17 +47,21 @@ class Home extends Component {
       this.setState({ canvasSize: 320 * 4 });
     } else if (window.screen.width <= 320) {
       this.setState({ canvasSize: 240 * 4 });
+    } else {
+      this.setState({ canvasSize: 260 * 4 });
     }
-    this.setState({ canvasSize: 260 * 4 });
+    // eslint-disable-next-line
+    this.setState({ animateScore: this.props.userInfo.stroke_totle_score });
   }
   componentDidMount() {
+    const that = this;
     function scoreAni(score) { // canvas动画
       if (score && score === 0) {
         return;
       }
-      const c = this.can;
+      const c = that.can;
       const cxt = c.getContext('2d');
-      const size = this.state.canvasSize;
+      const size = that.state.canvasSize;
       cxt.clearRect(0, 0, size * 4, size * 4); // 清除画布内容
       let diff = 4.5 * 4;
       const end = (8 * (Math.PI / 6) * (score / 100)) + (5 * (Math.PI / 6));
@@ -56,8 +89,23 @@ class Home extends Component {
         (size / 2) - diff, 5 * (Math.PI / 6), end, false);
       cxt.stroke();
     }
-    this.setState(prevState => {
-
+    animateUp(this.state.animateScore, 0, (s) => {
+      scoreAni(s);
+      that.setState({ animateText: s });
+    });
+    getMoney((data) => {
+      this.setState({ chance: data.msg.lottery_chance_left_cnt });
+      animateUp(data.msg.lottery_money, 0, (s) => {
+        that.setState({ animateMoney: s });
+      });
+    });
+  }
+  getRed() {
+    const that = this;
+    makeMoney((data) => {
+      animateUp(this.state.animateMoney + data.msg.money, this.state.animateMoney, (s) => {
+        that.setState({ animateMoney: s });
+      });
     });
   }
   render() {
@@ -77,14 +125,14 @@ class Home extends Component {
               <a className={`${userInfo.flag === 1 ? 'off' : ''} ico_vip`} />
               <div className="dashboard_bg no" />
               <div className="dashboard_canvas">
-                <canvas width={this.state.canvas}
-                  height={this.state.canvas}
+                <canvas width={this.state.canvasSize}
+                  height={this.state.canvasSize}
                   ref={can => (this.can = can)}
                   style={{ width: '100%', height: '100%' }}
                 />
               </div>
               <div className="dashboard_text">
-                <span className="num">{this.state.animateScore}</span>
+                <span className="num">{this.state.animateText}</span>
                 <span className="gray">驾驶评分</span>
                 <button className="mui-btn mui-btn-block mui-btn-danger">{userInfo.flag === 2 ? '导航' : '开始行车'}</button>
               </div>
@@ -100,7 +148,9 @@ class Home extends Component {
                   >{this.state.animateMoney}</em>
                 </span>
               </div>
-              <span className="btn_red">
+              <span className="btn_red"
+                onClick={this.getRed}
+              >
                 <i>{this.state.chance}</i>
               </span>
             </div>

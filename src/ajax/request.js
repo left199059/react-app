@@ -35,9 +35,10 @@ function request(requestUrl, requestData, method = 'GET', timeout = 10000, wait 
     console.log(response.data);
     const data = response.data;
     if (data.errCode === 100017) {
-      history.push('/');
-      Toast('请重新登录', 2000);
       localStorage.setItem('autoLogin', 'false'); // 自动登录标识
+      console.log(history);
+      history.replace('/');
+      Toast('请重新登录', 2000);
       // store.dispatch('changeUser', true); // 用户离线状态
     } else if (data.errCode === '0' || data.errCode === 0 || data.errCode === 200 || data.result === 200) {
       callback(data);
@@ -47,8 +48,8 @@ function request(requestUrl, requestData, method = 'GET', timeout = 10000, wait 
       Toast(data.errMsg, 2000);
     }
   }).catch((error) => {
-    Indicator.close();
     console.log(error);
+    Indicator.close();
     if (error) {
       let msg = '';
       if (error.message === 'Network Error') {

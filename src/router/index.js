@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 // import React from 'react';
-import { Route, NavLink, Switch } from 'react-router-dom';
+import { Route, NavLink } from 'react-router-dom';
 import Home from '../components/homepages/home';
 import Drive from '../components/homepages/drive';
 import Mall from '../components/homepages/mall';
@@ -52,7 +52,6 @@ class Index extends Component {
             >我的</span>
           </NavLink>
         </div>
-        <Switch>
           <Route className="mui-content"
             path="/index"
             component={Home}
@@ -70,7 +69,6 @@ class Index extends Component {
             path="/index/user"
             component={User}
           />
-        </Switch>
       </div>
     );
   }

@@ -11,6 +11,7 @@ function Indicator() {
   };
   this.close = () => {
     if (this.flag)document.body.removeChild(div);
+    this.flag = false;
   };
 }
 
