@@ -5931,3 +5931,11 @@ input[type="submit"] {
   .whiteBg {
     background : white
   }
+
+  .scroll {
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch
+  }
+  .scroll::-webkit-scrollbar {
+    display: none
+  }

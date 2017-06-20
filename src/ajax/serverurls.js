@@ -21,8 +21,4 @@ const SERVERS = {
   },
 };
 
-// let servers = SERVERS.produce;
-// export {
-//   servers,
-// };
 export default SERVERS.develop;

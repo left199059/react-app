@@ -1,5 +1,4 @@
 import axios from 'axios';
-import createHistory from 'history/createBrowserHistory';
 import Toast from '../components/common/toast';
 import Indicator from '../components/common/indicator/indicator';
 
@@ -28,18 +27,13 @@ function request(requestUrl, requestData, method = 'GET', timeout = 10000, wait 
     data: requestData, // post参数
     timeout,
   };
-  const history = createHistory();
   axios(config).then((response) => {
     Indicator.close();
     console.log(requestUrl);
     console.log(response.data);
     const data = response.data;
     if (data.errCode === 100017) {
-      localStorage.setItem('autoLogin', 'false'); // 自动登录标识
-      console.log(history);
-      history.replace('/');
-      Toast('请重新登录', 2000);
-      // store.dispatch('changeUser', true); // 用户离线状态
+      callback(data);
     } else if (data.errCode === '0' || data.errCode === 0 || data.errCode === 200 || data.result === 200) {
       callback(data);
     } else if (data.errCode === '100015' || data.errCode === 100015 || data.errCode === '100011' || data.errCode === 100011) {

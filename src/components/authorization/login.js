@@ -37,11 +37,11 @@ class Login extends Component {
       login(this.state.phone, this.state.password, (data) => {
         if (data.errCode !== '100015' && data.errCode !== 100015) {
           this.props.dispatch(saveUserInfo(data.data));
-          this.props.history.push('/index');
           localStorage.setItem('autoLogin', 'true');
           localStorage.setItem('phone', this.state.phone);
           localStorage.setItem('uid', data.data.uid);
           localStorage.setItem('token', data.data.token);
+          this.props.history.push('/index');
         } else {
           Toast(data.errMsg);
         }
