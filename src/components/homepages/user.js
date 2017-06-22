@@ -5,6 +5,7 @@ import Header from '../common/header';
 
 class User extends Component {
   render() {
+    /* eslint-disable react/prop-types */
     // eslint-disable-next-line
     const info = this.props.userInfo;
     return (
@@ -41,7 +42,7 @@ class User extends Component {
               >
                 <i className="ico" />我的钱包
                 <span className="mui-pull-right red">
-                  <b>金币</b>
+                  <b>{this.props.money}金币</b>
                 </span>
               </Link>
             </li>
@@ -91,5 +92,8 @@ class User extends Component {
   }
 }
 
-const mapStateToProps = state => ({ userInfo: state.userInfo });
+const mapStateToProps = state => ({
+  userInfo: state.userInfo,
+  money: state.money,
+});
 export default connect(mapStateToProps)(User);

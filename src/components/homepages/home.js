@@ -41,15 +41,12 @@ class Home extends Component {
     super();
     this.state = {
       canvasSize: 0,
-      animateScore: 0,
       animateText: 0,
       animateMoney: 0.00,
       redmoney: 0,
       chance: 0,
       double: 'false',
       showRed: false,
-      adList: [], // 轮播的广告列表
-      infoList: [], // 首页公众好资讯列表
     };
     this.getRed = this.getRed.bind(this);
     this.closeRed = this.closeRed.bind(this);
@@ -62,14 +59,6 @@ class Home extends Component {
       this.setState({ canvasSize: 240 * 4 });
     } else {
       this.setState({ canvasSize: 260 * 4 });
-    }
-    // eslint-disable-next-line
-    this.setState({ animateScore: this.props.userInfo.stroke_totle_score });
-    if (this.props.wxInfos) {
-      this.setState({ infoList: this.props.wxInfos });
-    }
-    if (this.props.ads) {
-      this.setState({ adList: this.props.ads });
     }
     if (this.props.money) {
       this.setState({ animateMoney: this.props.money });
@@ -113,7 +102,7 @@ class Home extends Component {
         (size / 2) - diff, 5 * (Math.PI / 6), end, false);
       cxt.stroke();
     }
-    animateUp(this.state.animateScore, 0, (s) => {
+    animateUp(this.props.userInfo.stroke_totle_score, 0, (s) => {
       scoreAni(s);
       that.setState({ animateText: s });
     });
@@ -146,7 +135,6 @@ class Home extends Component {
           const url = `${servers.httpAppServer}/wechat/img/${item.imageMediaId}?uid=${localStorage.getItem('uid')}&token=${localStorage.getItem('token')}`;
           item.imgurl = url;
         });
-        this.setState({ infoList: list });
         this.props.dispatch(saveWxInfos(list));
       });
     }
@@ -158,7 +146,6 @@ class Home extends Component {
           Toast('请重新登录', 2000);
           return;
         }
-        this.setState({ adList: data.result.list });
         this.props.dispatch(saveAds(data.result.list));
       });
     }
@@ -178,6 +165,7 @@ class Home extends Component {
         showRed: true,
         redmoney: data.msg.money,
       }));
+      this.props.dispatch(saveMoney((Number(that.state.animateMoney) + data.msg.money).toFixed(2)));
       animateUp(Number(that.state.animateMoney) + data.msg.money,
       Number(that.state.animateMoney), (s) => {
         that.setState({ animateMoney: s });
@@ -189,9 +177,8 @@ class Home extends Component {
   }
   render() {
     /* eslint-disable jsx-a11y/anchor-has-content */
-    // eslint-disable-next-line
     const userInfo = this.props.userInfo;
-    const infos = this.state.infoList.map(i =>
+    const infos = this.props.wxInfos.map(i =>
       (
         <li className="mui-table-view-cell" key={i.mediaId}>
           <span className="pic">
@@ -204,7 +191,7 @@ class Home extends Component {
         </li>
       ),
     );
-    const swipeItems = this.state.adList.map(i =>
+    const swipeItems = this.props.ads.map(i =>
       (
         <div key={i.advert_id}>
           <img src={i.advert_img_url} alt="" />
@@ -212,7 +199,7 @@ class Home extends Component {
       ),
     );
     let swipes = null;
-    if (this.state.adList) {
+    if (this.props.ads.length) {
       swipes = (
             <ReactSwipe className="swiper-container iSwiper" swipeOptions={{ continuous: false }} key={swipeItems.length}>
               {swipeItems}
